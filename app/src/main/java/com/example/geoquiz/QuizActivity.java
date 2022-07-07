@@ -32,6 +32,8 @@ public class QuizActivity extends AppCompatActivity {
 
     private int mCurrentIndex = 0;
 
+    private int[] mResults = new int[mQuestionBank.length];
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +69,7 @@ public class QuizActivity extends AppCompatActivity {
             public void onClick(View view) {
                 mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
                 updateQuestion();
+                updateButton();
             }
         });
 
@@ -79,6 +82,7 @@ public class QuizActivity extends AppCompatActivity {
                 else
                     mCurrentIndex = mQuestionBank.length - 1;
                 updateQuestion();
+                updateButton();
             }
         });
 
@@ -139,10 +143,32 @@ public class QuizActivity extends AppCompatActivity {
 
         if (userPressedTrue == answerIsTrue) {
             messageResId = R.string.correct_toast;
+            updateResults(true);
         } else {
             messageResId = R.string.incorrect_toast;
+            updateResults(false);
         }
         Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show();
+    }
+
+    private void enableAnsButtons(boolean enable) {
+        mFalseButton.setEnabled(enable);
+        mTrueButton.setEnabled(enable);
+    }
+
+    private void updateResults(boolean correct) {
+        if (correct == true)
+            mResults[mCurrentIndex] = 1;
+        else if (correct == false)
+            mResults[mCurrentIndex] = -1;
+        enableAnsButtons(false);
+    }
+
+    private void updateButton() {
+        if (mResults[mCurrentIndex] == 0)
+            enableAnsButtons(true);
+        else
+            enableAnsButtons(false);
     }
 
 }
