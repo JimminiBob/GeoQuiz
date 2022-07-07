@@ -171,4 +171,15 @@ public class QuizActivity extends AppCompatActivity {
             enableAnsButtons(false);
     }
 
+    private void calculateResult() {
+        int correctAns = 0;
+        int result = 0;
+        for (int i : mResults) {
+            if (mResults[i] == 1)
+                correctAns++;
+        }
+        result = (correctAns/mQuestionBank.length) * 100;
+        Toast.makeText(this, "You got" + result + "right", Toast.LENGTH_SHORT).show();
+    }
+
 }
